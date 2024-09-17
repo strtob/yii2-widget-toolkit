@@ -1,14 +1,17 @@
 <?php
 
-use yii\helpers\Html;
+namespace strtob\yii2WidgetToolkit\formTab\views;
 
-backend\components\widgets\formTab\FormTabCounterAsset::register($this);
+use yii;
+use yii\helpers\Html;
+use kartik\tabs\TabsX;
+use strtob\yii2Helpers\IconHelper;
 
 $forms = [];
 
 $isExtension = isset($tbl_sys_link_table_id) && isset($linked_table_id);
 
-$viewPath = Yii::$app->getViewPath();
+$viewPath = '@vendor/strtob/yii2-widget-toolkit/src/formTab/views';
 
 
 
@@ -49,7 +52,7 @@ foreach ($tabItems as $tabItem)
 if (!$model->isNewRecord)
 {
 
-    if ($linkModel = \backend\models\sys\SysLinkTable::find()
+    if ($linkModel = \app\models\LinkTable::find()
             ->withClass($model::class)
             ->one())
     {
@@ -123,7 +126,7 @@ if (!$model->isNewRecord)
                     $forms,
                     [
                         [
-                            'label'   => '<i class = "'.\backend\components\helpers\IconHelper::get('task').' me-1"></i> ' . Html::encode(
+                            'label'   => '<i class = "'.IconHelper::get('task').' me-1"></i> ' . Html::encode(
                                     \Yii::t('app', 'Task')
                             ),
                             'content' => $this->render(
@@ -150,7 +153,7 @@ if (!$model->isNewRecord)
                     $forms,
                     [
                         [
-                            'label'   => '<i class = "'.\backend\components\helpers\IconHelper::get('comment').' me-1"></i> ' . Html::encode(
+                            'label'   => '<i class = "'.IconHelper::get('comment').' me-1"></i> ' . Html::encode(
                                     \Yii::t('app', 'Comment')
                             ),
                             'content' => $this->render(
@@ -177,7 +180,7 @@ if (!$model->isNewRecord)
                     $forms,
                     [
                         [
-                            'label'   => '<i class = "'.\backend\components\helpers\IconHelper::get('communication').' me-1"></i> ' . Html::encode(
+                            'label'   => '<i class = "'.IconHelper::get('communication').' me-1"></i> ' . Html::encode(
                                     \Yii::t('app', 'Communication')
                             ),
                             'content' => $this->render(
@@ -204,7 +207,7 @@ if (!$model->isNewRecord)
                     $forms,
                     [
                         [
-                            'label'   => '<i class = "'.\backend\components\helpers\IconHelper::get('knowledgebase').' me-1"></i> ' . Html::encode(
+                            'label'   => '<i class = "'.IconHelper::get('knowledgebase').' me-1"></i> ' . Html::encode(
                                     \Yii::t('app', 'Knowledge Base')
                             ),
                             'content' => $this->render(
@@ -226,34 +229,36 @@ if (!$model->isNewRecord)
         }
     }
 
-    $forms = array_merge(
-            $forms,
-            [
+    if (\Yii::$app->user->can('permission_view_meta')) 
+        // If the user has the "admin" role or permission
+        $forms = array_merge(
+                $forms,
                 [
-                    'label'   => '<i class = "'.\backend\components\helpers\IconHelper::get('meta').' me-1"></i> ' . Html::encode(
-                            \Yii::t('app', 'Meta')
-                    ),
-                    'content' => $this->renderFile(
-                            $viewPath . '/meta/_extension/index.php',
-                            [
-                                'model'         => $model,
-                                'dataProviders' => $dataProviders,
-                                'searchModels'  => $searchModels,
-                                'uid'           => $uid,
-                            ]
-                    ),
+                    [
+                        'label'   => '<i class = "'.IconHelper::get('meta').' me-1"></i> ' . Html::encode(
+                                \Yii::t('app', 'Meta')
+                        ),
+                        'content' => $this->renderFile(
+                                $viewPath . '/_extension/meta.php',
+                                [
+                                    'model'         => $model,
+                                    'dataProviders' => $dataProviders,
+                                    'searchModels'  => $searchModels,
+                                    'uid'           => $uid,
+                                ]
+                        ),
+                    ]
                 ]
-            ]
-    );
+        );
 }
 
 
-echo \kartik\tabs\TabsX::widget([
+echo TabsX::widget([
     'items'            => $forms,
     'containerOptions' => ['id' => 'tab123', 'class' => 'pt-2 h-100'],
     'navType'          => 'nav',
     'options'          => ['class' => 'nav-pills flex-column'],
-    'position'         => kartik\tabs\TabsX::ALIGN_LEFT,
+    'position'         => TabsX::ALIGN_LEFT,
     'encodeLabels'     => false,
     'pluginOptions'    => [
         'bordered'    => true,

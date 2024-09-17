@@ -1,10 +1,10 @@
 <?php
 
-namespace strtob\yii2widgetkit;
+namespace strtob\yii2WidgetToolkit\formTab;
 
 use Yii;
 
-class formTabWidget extends \yii\bootstrap5\Widget
+class FormTabWidget extends \yii\bootstrap5\Widget
 {
 
     public $model;

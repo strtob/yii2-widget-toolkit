@@ -1,0 +1,13 @@
+{
+    "name": "strtob/yii2-widget-toolkit",
+    "description": "A Yii2 widget toolkit libary.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "strtob\\yii2-toastr-asset\\": "src/"
+        }
+    },
+    "require": {
+        "strtob/yii2-helpers": "dev-main"
+    }
+}

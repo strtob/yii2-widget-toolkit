@@ -1,6 +1,6 @@
 <?php
 
-namespace strtob\yii2widgetkit;
+namespace strtob\yii2WidgetToolkit\formTab;
 
 use yii\web\AssetBundle;
 

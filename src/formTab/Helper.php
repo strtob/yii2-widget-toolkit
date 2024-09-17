@@ -1,7 +1,6 @@
 <?php
 
-namespace strtob\yii2widgetkit;
-
+namespace strtob\yii2WidgetToolkit\formTab;
 /**
  * Description of Helper
  *
