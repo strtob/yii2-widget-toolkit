@@ -1,13 +1,16 @@
 {
     "name": "strtob/yii2-widget-toolkit",
-    "description": "A Yii2 widget toolkit libary.",
+    "description": "A toolkit of Yii2 widgets.",
     "type": "library",
+    "require": {
+        "php": ">=7.4",
+        "yiisoft/yii2": "*"
+    },
     "autoload": {
         "psr-4": {
-            "strtob\\yii2-toastr-asset\\": "src/"
+            "strtob\\yii2WidgetToolkit\\": "src/"
         }
     },
-    "require": {
-        "strtob/yii2-helpers": "dev-main"
-    }
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
