@@ -4,7 +4,9 @@
     "type": "library",
     "require": {
         "php": ">=7.4",
-        "yiisoft/yii2": "*"
+        "yiisoft/yii2": "*",
+        "bower-asset/jquery": ">=3.5",   
+        "bower-asset/fonticonpicker": "*" 
     },
     "autoload": {
         "psr-4": {
