@@ -1,49 +1,46 @@
 <?php
+
 namespace strtob\yii2WidgetToolkit\FontIconPicker;
 
-use yii\web\AssetBundle;
+use Yii;
 
-class FontIconPickerAsset extends AssetBundle
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\bootstrap5\InputWidget;
+
+class FontIconPicker extends InputWidget
 {
-    public $sourcePath = '@vendor/strtob/yii2-widget-toolkit/src/FontIconPicker/node_modules/@fonticonpicker/fonticonpicker/dist';
-    
-    public $css = [      
-        'css/base/jquery.fonticonpicker.min.css',
-        'css/themes/bootstrap-theme/jquery.fonticonpicker.bootstrap.min.css',
-    ];
-    
-    public $js = [
-        'js/jquery.fonticonpicker.min.js',
-    ];
 
-    public $depends = [
-        'yii\web\JqueryAsset',
-        'yii\bootstrap5\BootstrapAsset',
-    ];
+    public $clientOptions = [];
 
-    public $publishOptions = [
-        'forceCopy' => YII_DEBUG, // Enable force copy in debug mode
-    ];
-
-    // Add the fonts to the asset bundle
-    public $fonts = [
-        'fonts/iconpicker.eot',
-        'fonts/iconpicker.woff',
-        'fonts/iconpicker.ttf',
-        'fonts/iconpicker.svg',
-    ];
-    
-    public function init()
+    public function run()
     {
-        parent::init();
-        $this->publishFonts();
+        if ($this->hasModel()) {
+            echo Html::activeTextInput($this->model, $this->attribute, $this->options);
+        } else {
+            echo Html::textInput($this->name, $this->value, $this->options);
+        }
+        $this->registerClientScript();
     }
 
-    protected function publishFonts()
+    /**
+     * Publish resource
+     */
+    protected function registerClientScript()
     {
-        // This method publishes the fonts
-        foreach ($this->fonts as $font) {
-            $this->css[] = $font; // You may use $this->css or $this->js depending on the structure.
-        }
+        $js = [];
+        $view = $this->getView();
+        FontIconPickerAsset::register($view);
+        $id = $this->options['id'];
+        $options = Json::encode($this->clientOptions);
+ 
+        $js[] = "$(document).ready(function() {
+            $('#{$id}').fontIconPicker({
+               
+                theme: 'fip-darkgrey'
+            });
+        });";
+
+        $view->registerJs(implode("\n", $js));
     }
 }
