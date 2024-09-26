@@ -1,20 +1,18 @@
-<?php
-
 namespace strtob\yii2WidgetToolkit\FontIconPicker;
 
 use yii\web\AssetBundle;
 
 class FontIconPickerAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $sourcePath = '@bower/fonticonpicker'; // Update if the path is different
     public $css = [
-        'path/to/fonticonpicker.css', 
+        'css/jquery.fonticonpicker.min.css', // Ensure this path is correct
     ];
     public $js = [
-        'path/to/jquery.fonticonpicker.js', 
+        'js/jquery.fonticonpicker.min.js', // Ensure this path is correct
     ];
     public $depends = [
-        'yii\web\JqueryAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 }
