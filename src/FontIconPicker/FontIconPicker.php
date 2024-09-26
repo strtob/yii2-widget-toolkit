@@ -20,6 +20,13 @@ class FontIconPicker extends Widget
         if (empty($this->iconList)) {
             $this->iconList = ['fa fa-user', 'fa fa-home', 'fa fa-cog']; 
         }
+
+
+	
+    	if (!isset($this->options['id'])) {
+        	$this->options['id'] = $this->getId();  
+    	}
+
     }
 
     public function run()
