@@ -6,13 +6,15 @@ A toolkit set of Yii2 widgets.
 
 The widget render FontIconPicker from https://fonticonpicker.github.io and works with bootstrap 5.
 
+
+
 ### Installation
 
 ```bash
 composer require strtob/yii2-widget-toolkit
 ```
 
-### Use
+### Use of FontIconPicker
 
 Just code the widget tag
 
