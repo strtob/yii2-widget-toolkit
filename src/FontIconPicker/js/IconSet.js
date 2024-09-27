@@ -743,7 +743,12 @@ var iconscat = {
         "fas fa-magnet",
         "fas fa-map",
         "fas fa-map-marker",
-        "fas fa-map-marker-alt"
+        "fas fa-map-marker-alt",
+        "fas fa-hammer",
+        "fas fa-cash-register",
+        "fas fa-glasses",
+        "fas fa-magnifying-glass",
+
     ],
     "Payments & Shopping": [
         "fas fa-bell",
@@ -768,7 +773,8 @@ var iconscat = {
         "fas fa-tags",
         "fas fa-thumbs-down",
         "fas fa-thumbs-up",
-        "fas fa-trophy"
+        "fas fa-trophy",
+        "fas fa-arrows-left-right",
     ],
     "Shapes": [
         "fas fa-bookmark",
@@ -862,7 +868,9 @@ var iconscat = {
         "fas fa-toggle-off",
         "fas fa-toggle-on",
         "fas fa-unlock",
-        "fas fa-unlock-alt"
+        "fas fa-unlock-alt",
+
+
     ],
     "Users & People": [
         "fas fa-address-book",
@@ -886,6 +894,7 @@ var iconscat = {
         "fas fa-user-secret",
         "fas fa-user-times",
         "fas fa-users",
+        "fas fa-user-tie",
         "fas fa-wheelchair"
     ],
     "Vehicles": [
