@@ -1,6 +1,6 @@
 <?php
 
-namespace strtob\yii2WidgetTookit\Select2Country;
+namespace strtob\yii2WidgetToolkit\Select2Country;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -11,166 +11,196 @@ use yii\web\View;
 /**
  * CountrySelect widget extends the [[Select2]] widget and uses countries list as data.
  *
+ * Allows for features like displaying preferred countries, country flags, and 
+ * placing the user's IP country at the top of the dropdown.
  */
-class Select2CountryWidget extends Select2 {
+class Select2CountryWidget extends Select2
+{
 
     /**
      * Countries which should be at the top of the list.
      *
      * @var array
      */
-    public $preferredCountries = ['DE','AT','FR', 'GB'];
+    public $preferredCountries = ['DE', 'AT', 'FR', 'GB'];
 
     /**
-     * If it is true the widget will display user IP country at the top of the list.
+     * If true, the widget will display the user's IP country at the top of the list.
      *
      * @var bool
      */
     public $enableIpCountryFirst = true;
 
     /**
-     * If it is true the widget will display country flag images.
+     * If true, the widget will display country flag images.
      *
      * @var bool
      */
     public $displayFlags = true;
-      
 
-    public $modelClass = null;
     /**
-     * User IP country ISO code.
+     * The model class representing the language table.
+     *
+     * @var string
+     */
+    public $modelClassLanguage = null;
+
+    /**
+     * The model class representing the country table.
+     *
+     * @var string
+     */
+    public $modelClassCountry = null;
+
+    /**
+     * User's IP country ISO code.
      *
      * @var string
      */
     protected $ipCountry;
 
     /**
-     * @inheritdoc
+     * Initializes the widget, sets up IP country and flags if required.
+     *
      * @throws \ReflectionException
      * @throws \yii\base\InvalidConfigException
      */
-    public function init() {
+    public function init()
+    {
+        // Ensure the modelClassLanguage is provided
+        if (is_null($this->modelClassLanguage)) {
+            throw new \yii\base\InvalidConfigException('Parameter "modelClassLanguage" is required for Language Table');
+        }
 
-	if(isNull($modelClass))
-		throw new Exception('Set parameter modelclass');
-
+        // Set up IP country if enabled
         $this->setupIpCountry();
+
+        // Set up flags rendering if enabled
         $this->setupFlagsRendering();
-        $this->options['placeholder'] = isset($this->options['placeholder']) ?: \yii::t('user', 'Choose...');
+
+        // Set default placeholder if not set
+        $this->options['placeholder'] = $this->options['placeholder'] ?? \Yii::t('user', 'Choose...');
+
+        // Prepare dropdown data
         $this->data = $this->getDropdownData();
-  
-        parent::init();$this->options['placeholder'] = $this->options['placeholder'] ?: \yii::t('user', 'Choose...');
+
+        // Call parent init method
+        parent::init();
     }
 
     /**
      * Returns country name by its code.
-     *
-     * @param $code
-     * @return mixed
+     * 
+     * @param string $code
+     * @return string
+     * @throws \yii\base\InvalidConfigException
      */
-    public static function getName($code) {
-        return (\backend\models\basic\BasicGeoCountry::find()
-                        ->code($code)
-                        ->one())
-                ->name;
+    public static function getName($code)
+    {
+        // Ensure the modelClassCountry is defined
+        if (is_null($this->modelClassCountry)) {
+            throw new \yii\base\InvalidConfigException('modelClassCountry is required.');
+        }
+
+        // Fetch country name by code
+        return $this->modelClassCountry::find()
+            ->where(['code' => $code])
+            ->one()
+            ->name;
     }
 
     /**
-     * Returns normalized array for dropdown mapped from country code to its name.
+     * Returns normalized array for dropdown mapped from country code to name.
      *
      * @return array
      */
-    protected function getDropdownData() {
+    protected function getDropdownData()
+    {
+        // Fetch raw data and prepare preferred list
         $rawData = $this->getRawData();
         $priorityCountries = $this->getPreferredList();
         $finalList = [];
 
+        // Add preferred countries at the top
         if ($priorityCountries) {
             foreach ($priorityCountries as $priorityCountry) {
                 $finalList[$priorityCountry] = ArrayHelper::remove($rawData, $priorityCountry);
             }
         }
-                
 
+        // Add remaining countries
         foreach ($rawData as $data) {
             $finalList[$data['code']] = $data['name'];
-            ArrayHelper::remove($rawData, $data['code']);
         }
-        
+
         return $finalList;
     }
 
     /**
-     * Finds countries data by language from file.
+     * Finds countries data by language from the model.
      *
-     * Returns countries array mapped from its code to name.
+     * Returns countries array mapped from code to name.
      *
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
-    protected function getRawData() {
-//        $language = $this->processLanguage();
-//        $fileName = __DIR__ . '/data/' . $language . '.json';
-//
-//        if (!file_exists($fileName))
-//            $fileName = __DIR__ . '/data/en.json';
-//
-//        $file = file_get_contents($fileName);
-//
-//        return json_decode($file, 1);
+    protected function getRawData()
+    {
+        // Ensure modelClassCountry is provided
+        if (is_null($this->modelClassCountry)) {
+            throw new \yii\base\InvalidConfigException('modelClassCountry is required.');
+        }
 
-        $models = \backend\models\basic\BasicGeoCountry::find()
-                ->all();
+        // Fetch all country data from the country model
+        $models = $this->modelClassCountry::find()->all();
 
         return ArrayHelper::toArray($models, [
-                    $this->modelClass => [
-                        'code',
-                        'name',
-                    ],
+            $this->modelClassCountry => [
+                'code',
+                'name',
+            ],
         ]);
     }
 
     /**
-     * Returns preferred countries list.
-     *
-     * If IP country first param is enabled IP country will be at the top of the list.
+     * Returns preferred countries list with IP country at the top if enabled.
      *
      * @return array
      */
-    protected function getPreferredList() {
+    protected function getPreferredList()
+    {
+        // Insert the IP country at the top if enabled
         if ($this->ipCountry) {
             $needle = array_search($this->ipCountry, $this->preferredCountries);
             $arr[] = ArrayHelper::remove($this->preferredCountries, $needle);
             return array_merge($arr, $this->preferredCountries);
-        } else
-            return $this->preferredCountries;
+        }
+
+        return $this->preferredCountries;
     }
 
     /**
-     * Sets IP country code if enableIpCountryFirst param is true using GeoIP extension.
+     * Sets IP country code if enableIpCountryFirst is true.
      *
-     * Throws the exception if the extension class is not found.
-     *
-     * @throws \yii\base\InvalidConfigException
+     * Uses GeoIP to determine the user's IP country.
      */
-    protected function setupIpCountry() {
-//        if ($this->enableIpCountryFirst) {
-//            $components = Yii::$app->getComponents();
-//            if (isset($components['geoip']) && $components['geoip']['class'] === 'lysenkobv\GeoIP\GeoIP')
-//                $this->ipCountry = Yii::$app->geoip->ip()->isoCode;
-//            else {
-//                $geoip = Yii::createObject([
-//                            'class' => 'lysenkobv\GeoIP\GeoIP'
-//                ]);
-//                $this->ipCountry = $geoip->ip()->isoCode;
-//            }
-//        }
+    protected function setupIpCountry()
+    {
+        if ($this->enableIpCountryFirst) {
+            // Logic to set IP country using GeoIP or similar service (commented out)
+            // This is pseudo-code to represent how it could be done
+            /*
+            $geoip = Yii::$app->geoip;
+            $this->ipCountry = $geoip->ip()->isoCode;
+            */
+        }
     }
 
     /**
-     * If displayFlags param is true formats countries list by adding to each element its flag image.
+     * If displayFlags is true, formats the country list with flag images.
      */
-    protected function setupFlagsRendering() {
-
+    protected function setupFlagsRendering()
+    {
         if ($this->displayFlags) {
             $this->registerFlagsDisplayJs();
             $this->pluginOptions['templateResult'] = new JsExpression('formatCountriesList');
@@ -180,31 +210,37 @@ class Select2CountryWidget extends Select2 {
     }
 
     /**
-     * Registers JS callback function which formats countries list by adding to each element its flag image.
+     * Registers JavaScript function to add flag images to the country list.
      */
-    protected function registerFlagsDisplayJs() {
-        $url = \Yii::$app->urlManager->baseUrl . '/images/flags/';
-        $format = <<< SCRIPT
-        var formatCountriesList = function (state, container) {
+    protected function registerFlagsDisplayJs()
+    {
+        // Dynamically resolve the URL for the 'flags' subfolder
+        $path = \Yii::getAlias('@web');  // Get the base URL of your web application
+        $url = $path . '@vendor/strtob/yii2-widget-toolkit/src/Select2Country/flags/';  // Adjust this path to your actual location
 
-            if (!state.id) return state.text;
-            src = '$url' +  state.id.toLowerCase() + '.png'
-            return '<img class="flag" src="' + src + '"/> ' + state.text;
-        }
-        SCRIPT;
+        // Register JavaScript to format the dropdown with flag images
+        $format = <<<SCRIPT
+    var formatCountriesList = function (state, container) {
+        if (!state.id) return state.text;  // If no id, just return the text
+
+        var src = '$url' + state.id.toLowerCase() + '.png';  // Create the flag URL
+        return '<img class="flag" src="' + src + '" style="height: 14px; margin-right: 5px;" /> ' + state.text;  // Add image and text
+    };
+    SCRIPT;
 
         $this->view->registerJs($format, View::POS_HEAD);
     }
 
+
     /**
-     * Returns only language if the language consists of two parts ('language-COUNTRY').
+     * Returns only the language part if the language consists of two parts (e.g., 'language-COUNTRY').
      *
      * @return string
      */
-    protected function processLanguage() {
+    protected function processLanguage()
+    {
         $language = $this->language ?: Yii::$app->language;
         $parts = explode('-', $language);
         return $parts[0];
     }
-
 }
