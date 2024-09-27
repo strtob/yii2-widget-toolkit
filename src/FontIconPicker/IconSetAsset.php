@@ -3,7 +3,7 @@ namespace strtob\yii2WidgetToolkit\FontIconPicker;
 
 use yii\web\AssetBundle;
 
-class FontIconPickerAsset extends AssetBundle
+class IconSetAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/strtob/yii2-widget-toolkit/src/FontIconPicker';
     
