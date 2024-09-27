@@ -1,11 +1,12 @@
 <?php
-namespace app\assets;
+
+namespace strtob\yii2WidgetToolkit\FontIconPicker;
 
 use yii\web\AssetBundle;
 
-class AwesomeIconAsset extends AssetBundle
+class AwesomeIconsAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/fontawesome/fontawesome-free';
+    public $sourcePath = '@vendor/fortawesome/font-awesome';
     public $css = [
         'css/all.min.css',
     ];
@@ -13,5 +14,9 @@ class AwesomeIconAsset extends AssetBundle
 
     public $publishOptions = [
         'forceCopy' => YII_DEBUG,
+    ];
+
+    public $depends = [
+        \strtob\yii2WidgetToolkit\FontIconPicker\FontIconPickerAsset::class,
     ];
 }
