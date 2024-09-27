@@ -17,5 +17,6 @@ composer require strtob/yii2-widget-toolkit
 Just code the widget tag
 
 ```bash
- <?= $form->field($model, 'css_class')->widget(\strtob\yii2WidgetToolkit\FontIconPicker\FontIconPicker::class, []) ?>
+ <?= $form->field($model, 'css_class')
+  ->widget(\strtob\yii2WidgetToolkit\FontIconPicker\FontIconPicker::class, []) ?>
 ```
