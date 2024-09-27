@@ -7,6 +7,8 @@ use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\bootstrap5\InputWidget;
+use strtob\yii2WidgetToolkit\FontIconPicker\IconSetAsset;
+use strtob\yii2WidgetToolkit\FontIconPicker\AwesomeIconsAsset;
 
 class FontIconPicker extends InputWidget
 {
@@ -29,15 +31,18 @@ class FontIconPicker extends InputWidget
     protected function registerClientScript()
     {
         $js = [];
-        $view = $this->getView();
+        $view = $this->getView();        
+        IconSetAsset::register($view);
         FontIconPickerAsset::register($view);
+        AwesomeIconsAsset::register($view);      
+
         $id = $this->options['id'];
         $options = Json::encode($this->clientOptions);
  
         $js[] = "$(document).ready(function() {
-            $('#{$id}').fontIconPicker({
-               
-                theme: 'fip-darkgrey'
+            $('#{$id}').fontIconPicker({           
+            theme: 'fip-bootstrap',
+                source: iconscat
             });
         });";
 
