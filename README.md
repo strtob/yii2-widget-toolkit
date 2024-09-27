@@ -1,6 +1,9 @@
 # Yii2 Widget Toolkit
 
 A toolkit set of Yii2 widgets.
+- Tab
+- Font Icon Picker
+- Select2 with Country Flags
 
 ## FontIconPicker Widget
 
