@@ -1,18 +1,18 @@
 {
     "name": "strtob/yii2-widget-toolkit",
-    "description": "A toolkit of Yii2 widgets.",
-    "type": "library",
-    "require": {
-        "php": ">=7.4",
-        "yiisoft/yii2": "*",
-        "bower-asset/jquery": ">=3.5",   
-        "bower-asset/fonticonpicker": "*" 
-    },
+    "description": "A toolkit set of Yii2 widgets, e.g. Font Icon Picker",
+    "type": "yii2-widgets",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
-            "strtob\\yii2WidgetToolkit\\": "src/"
+            "Strtob\\Yii2WidgetToolkit\\": "src/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "authors": [
+        {
+            "name": "Tobias Streckel",
+            "email": "ts@re-soft.de"
+        }
+    ],
+    "require": {}
 }
