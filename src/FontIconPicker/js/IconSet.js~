@@ -148,12 +148,7 @@ var iconscat = {
         "fas fa-video",
         "fas fa-volume-down",
         "fas fa-volume-off",
-        "fas fa-volume-up",
-        "fas fa-youtube",
-        "fas fa-youtube-square",
-        "fas fa-youtube-play",
-        "fas fa-youtube",
-        "fas fa-dashboard",
+        "fas fa-volume-up"
     ],
     "Business": [
         "fas fa-address-book",
