@@ -51,10 +51,21 @@ foreach ($tabItems as $tabItem)
 
 if (!$model->isNewRecord)
 {
+    $linkModel = null;
 
-    if ($linkModel = \app\models\LinkTable::find()
+    if (class_exists('\app\models\LinkType')) {
+        // Try to find the LinkType model if the class exists
+        $linkModel = \app\models\LinkType::find()
             ->withClass($model::class)
-            ->one())
+            ->one();
+    } else {
+        // Fall back to LinkTable if LinkType class doesn't exist
+        $linkModel = \app\models\LinkTable::find()
+            ->withClass($model::class)
+            ->one();
+    }
+
+    if ($linkModel)
     {
 
         $fileAvoidModelClass = [
