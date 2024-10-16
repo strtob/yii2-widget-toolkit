@@ -300,7 +300,12 @@ var iconscat = {
         "fas fa-tablet",
         "fas fa-tablet-alt",
         "fas fa-tv",
-        "fas fa-upload"
+        "fas fa-upload",
+        "fa-solid fa-database",
+        "fa-solid fa-server",
+        "fa-solid fa-code-branch",
+        "fa-solid fa-code",
+
     ],
     "Currency": [
         "fas fa-dollar-sign",
