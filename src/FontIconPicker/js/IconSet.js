@@ -211,7 +211,10 @@ var iconscat = {
         "fas fa-tags",
         "fas fa-tasks",
         "fas fa-thumbtack",
-        "fas fa-trademark"
+        "fas fa-trademark",
+        "fa-solid fa-wrench",
+        "fa-solid fa-screwdriver-wrench",
+        
     ],
     "Chess": [
         "fas fa-chess",
