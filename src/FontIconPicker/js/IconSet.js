@@ -214,6 +214,7 @@ var iconscat = {
         "fas fa-trademark",
         "fa-solid fa-wrench",
         "fa-solid fa-screwdriver-wrench",
+        'fab fa-wordpress',
         
     ],
     "Chess": [
