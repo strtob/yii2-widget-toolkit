@@ -20,8 +20,9 @@ class FormTabWidget extends \yii\bootstrap5\Widget
     public function init()
     {
 
-        if (is_null($this->tbl_sys_link_table_id))
-            throw new \Exception('tbl_sys_link_table_id parameter in widget not defined.');
+        // tbl_sys_link_table_id is optional
+        // if (is_null($this->tbl_sys_link_table_id))
+        //     throw new \Exception('tbl_sys_link_table_id parameter in widget not defined.');
 
         if (is_null($this->linked_table_id) && !$this->model->isNewRecord)
             throw new \Exception('linked_table_id parameter in widget not defined.');
