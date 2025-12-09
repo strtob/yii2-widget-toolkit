@@ -53,12 +53,12 @@ if (!$model->isNewRecord)
 {
     $linkModel = null;
 
-    if (class_exists('\app\models\LinkType')) {
+    if (class_exists('\app\models\LinkType', false)) {
         // Try to find the LinkType model if the class exists
         $linkModel = \app\models\LinkType::find()
             ->withClass($model::class)
             ->one();
-    } else {
+    } elseif (class_exists('\app\models\LinkTable', false)) {
         // Fall back to LinkTable if LinkType class doesn't exist
         $linkModel = \app\models\LinkTable::find()
             ->withClass($model::class)
